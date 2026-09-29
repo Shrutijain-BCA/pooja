@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { MapPin, ArrowRight } from 'lucide-react';
-import { getStateBySlug, getLocationsByState } from '@/lib/api';
-import type { State, Location } from '@/types/database';
-import { LoadingSpinner } from '@/components/Loading';
-import ErrorState from '@/components/ErrorState';
-import EmptyState from '@/components/EmptyState';
+import { getStateBySlug, getLocationsByState } from '../lib/api';
+import type { State, Location } from '../types/database';
+import { LoadingSpinner } from '../components/Loading';
+import ErrorState from '../components/ErrorState';
+import EmptyState from '../components/EmptyState';
 
 export default function StateDetail() {
   const { stateSlug } = useParams<{ stateSlug: string }>();

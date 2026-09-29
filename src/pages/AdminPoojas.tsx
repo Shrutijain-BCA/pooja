@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Plus, Edit, Power, X, Save, Search } from 'lucide-react';
-import { getAllPoojasAdmin, getCategories, getPurposes, getDeities, getOccasions } from '@/lib/api';
-import { supabase } from '@/lib/supabase';
-import { slugify } from '@/lib/helpers';
-import type { Pooja, Category, Purpose, Deity, Occasion } from '@/types/database';
-import { LoadingSpinner } from '@/components/Loading';
-import ErrorState from '@/components/ErrorState';
+import { getAllPoojasAdmin, getCategories, getPurposes, getDeities, getOccasions } from '../lib/api';
+import { supabase } from '../lib/supabase';
+import { slugify } from '../lib/helpers';
+import type { Pooja, Category, Purpose, Deity, Occasion } from '../types/database';
+import { LoadingSpinner } from '../components/Loading';
+import ErrorState from '../components/ErrorState';
 
 export default function AdminPoojas() {
   const [poojas, setPoojas] = useState<Pooja[]>([]);

@@ -1,12 +1,12 @@
 import { useEffect, useState, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Search, SlidersHorizontal, X, Calendar } from 'lucide-react';
-import { getPoojas, getCategories, getPurposes, getDeities, getStates, getLocations, getAllActiveOfferings } from '@/lib/api';
-import type { Pooja, Category, Purpose, Deity, State, Location } from '@/types/database';
-import PoojaCard from '@/components/PoojaCard';
-import { LoadingSpinner } from '@/components/Loading';
-import ErrorState from '@/components/ErrorState';
-import EmptyState from '@/components/EmptyState';
+import { getPoojas, getCategories, getPurposes, getDeities, getStates, getLocations, getAllActiveOfferings } from '../lib/api';
+import type { Pooja, Category, Purpose, Deity, State, Location } from '../types/database';
+import PoojaCard from '../components/PoojaCard';
+import { LoadingSpinner } from '../components/Loading';
+import ErrorState from '../components/ErrorState';
+import EmptyState from '../components/EmptyState';
 import { Search as SearchIcon } from 'lucide-react';
 
 export default function ExplorePoojas() {

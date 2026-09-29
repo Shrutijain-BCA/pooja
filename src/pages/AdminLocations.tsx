@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Plus, Edit, Power, X, Save, Search } from 'lucide-react';
-import { getAllLocationsAdmin, getAllStatesAdmin } from '@/lib/api';
-import { supabase } from '@/lib/supabase';
-import { slugify } from '@/lib/helpers';
-import type { Location, State } from '@/types/database';
-import { LoadingSpinner } from '@/components/Loading';
-import ErrorState from '@/components/ErrorState';
+import { getAllLocationsAdmin, getAllStatesAdmin } from '../lib/api';
+import { supabase } from '../lib/supabase';
+import { slugify } from '../lib/helpers';
+import type { Location, State } from '../types/database';
+import { LoadingSpinner } from '../components/Loading';
+import ErrorState from '../components/ErrorState';
 
 export default function AdminLocations() {
   const [locations, setLocations] = useState<Location[]>([]);

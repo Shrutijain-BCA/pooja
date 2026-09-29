@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { Home, Heart, Users, Star, UserRound, Activity, Sun, Gift, ArrowRight, Check } from 'lucide-react';
-import { getPurposes, getPoojas } from '@/lib/api';
-import type { Purpose, Pooja } from '@/types/database';
-import PoojaCard from '@/components/PoojaCard';
-import { LoadingSpinner } from '@/components/Loading';
+import { getPurposes, getPoojas } from '../lib/api';
+import type { Purpose, Pooja } from '../types/database';
+import PoojaCard from '../components/PoojaCard';
+import { LoadingSpinner } from '../components/Loading';
 
 const ICONS: Record<string, any> = {
   home: Home,

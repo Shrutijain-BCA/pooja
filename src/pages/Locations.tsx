@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { MapPin, ArrowRight } from 'lucide-react';
-import { getStates, getLocations } from '@/lib/api';
-import type { State, Location } from '@/types/database';
-import { LoadingSpinner } from '@/components/Loading';
-import ErrorState from '@/components/ErrorState';
+import { getStates, getLocations } from '../lib/api';
+import type { State, Location } from '../types/database';
+import { LoadingSpinner } from '../components/Loading';
+import ErrorState from '../components/ErrorState';
 
 export default function Locations() {
   const [states, setStates] = useState<State[]>([]);

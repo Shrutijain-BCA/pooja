@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Search, Mail, Phone, Calendar } from 'lucide-react';
-import { getAllUsersAdmin } from '@/lib/api';
-import { LoadingSpinner } from '@/components/Loading';
-import ErrorState from '@/components/ErrorState';
-import EmptyState from '@/components/EmptyState';
-import { formatDate } from '@/lib/helpers';
+import { getAllUsersAdmin } from '../lib/api';
+import { LoadingSpinner } from '../components/Loading';
+import ErrorState from '../components/ErrorState';
+import EmptyState from '../components/EmptyState';
+import { formatDate } from '../lib/helpers';
 
 export default function AdminUsers() {
   const [users, setUsers] = useState<any[]>([]);

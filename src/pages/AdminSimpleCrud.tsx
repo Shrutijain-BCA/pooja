@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Plus, Edit, Power, X, Save, Search } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
-import { slugify } from '@/lib/helpers';
-import { LoadingSpinner } from '@/components/Loading';
-import ErrorState from '@/components/ErrorState';
+import { supabase } from '../lib/supabase';
+import { slugify } from '../lib/helpers';
+import { LoadingSpinner } from '../components/Loading';
+import ErrorState from '../components/ErrorState';
 
 interface CrudConfig {
   title: string;

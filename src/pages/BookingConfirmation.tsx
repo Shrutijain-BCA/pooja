@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { CheckCircle, Calendar, MapPin, Users, ArrowRight, Clock } from 'lucide-react';
-import { getBookingById } from '@/lib/api';
-import type { Booking } from '@/types/database';
-import { formatPrice, formatDate, getStatusBgClass } from '@/lib/helpers';
-import { LoadingSpinner } from '@/components/Loading';
-import ErrorState from '@/components/ErrorState';
+import { getBookingById } from '../lib/api';
+import type { Booking } from '../types/database';
+import { formatPrice, formatDate, getStatusBgClass } from '../lib/helpers';
+import { LoadingSpinner } from '../components/Loading';
+import ErrorState from '../components/ErrorState';
 
 export default function BookingConfirmation() {
   const { bookingId } = useParams<{ bookingId: string }>();

@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Calendar, MapPin, ArrowRight, Inbox } from 'lucide-react';
-import { getMyBookings } from '@/lib/api';
-import type { Booking, BookingStatus } from '@/types/database';
-import { formatPrice, formatDate, getStatusBgClass } from '@/lib/helpers';
-import { LoadingSpinner } from '@/components/Loading';
-import ErrorState from '@/components/ErrorState';
-import EmptyState from '@/components/EmptyState';
+import { getMyBookings } from '../lib/api';
+import type { Booking, BookingStatus } from '../types/database';
+import { formatPrice, formatDate, getStatusBgClass } from '../lib/helpers';
+import { LoadingSpinner } from '../components/Loading';
+import ErrorState from '../components/ErrorState';
+import EmptyState from '../components/EmptyState';
 
 const TABS: { label: string; value: string }[] = [
   { label: 'Upcoming', value: 'upcoming' },

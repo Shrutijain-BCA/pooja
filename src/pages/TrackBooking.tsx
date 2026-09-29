@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Search, Calendar, MapPin, AlertCircle, FileText, ArrowRight } from 'lucide-react';
-import { getBookingByNumberAndPhone } from '@/lib/api';
-import type { Booking } from '@/types/database';
-import { formatDate, getStatusBgClass, getStatusDotClass } from '@/lib/helpers';
+import { getBookingByNumberAndPhone } from '../lib/api';
+import type { Booking } from '../types/database';
+import { formatDate, getStatusBgClass, getStatusDotClass } from '../lib/helpers';
 
 export default function TrackBooking() {
   const [bookingNumber, setBookingNumber] = useState('');

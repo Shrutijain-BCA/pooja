@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { User, Mail, Phone, MapPin, Save, CheckCircle } from 'lucide-react';
-import { useAuth } from '@/context/AuthContext';
-import { LoadingSpinner } from '@/components/Loading';
+import { useAuth } from '../context/AuthContext';
+import { LoadingSpinner } from '../components/Loading';
 
 export default function MyProfile() {
   const { profile, updateProfile, user } = useAuth();

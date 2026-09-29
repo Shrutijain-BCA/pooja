@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Plus, Edit, X, Save, Search, Layers } from 'lucide-react';
-import { getAllOfferingsAdmin, getAllPoojasAdmin, getAllLocationsAdmin } from '@/lib/api';
-import { supabase } from '@/lib/supabase';
-import { formatPrice } from '@/lib/helpers';
-import type { LocationPooja, Pooja, Location } from '@/types/database';
-import { LoadingSpinner } from '@/components/Loading';
-import ErrorState from '@/components/ErrorState';
+import { getAllOfferingsAdmin, getAllPoojasAdmin, getAllLocationsAdmin } from '../lib/api';
+import { supabase } from '../lib/supabase';
+import { formatPrice } from '../lib/helpers';
+import type { LocationPooja, Pooja, Location } from '../types/database';
+import { LoadingSpinner } from '../components/Loading';
+import ErrorState from '../components/ErrorState';
 
 export default function AdminOfferings() {
   const [offerings, setOfferings] = useState<LocationPooja[]>([]);

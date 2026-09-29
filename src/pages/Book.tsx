@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useParams, useSearchParams, useNavigate, Link } from 'react-router-dom';
 import { Check, ArrowRight, ArrowLeft, Calendar, Users, MapPin, FileText, AlertCircle } from 'lucide-react';
-import { getPoojaBySlug, getOfferingsByPooja } from '@/lib/api';
-import { useAuth } from '@/context/AuthContext';
-import { createBooking } from '@/lib/api';
-import type { Pooja, LocationPooja } from '@/types/database';
-import { formatPrice } from '@/lib/helpers';
-import { LoadingSpinner } from '@/components/Loading';
-import ErrorState from '@/components/ErrorState';
-import EmptyState from '@/components/EmptyState';
+import { getPoojaBySlug, getOfferingsByPooja } from '../lib/api';
+import { useAuth } from '../context/AuthContext';
+import { createBooking } from '../lib/api';
+import type { Pooja, LocationPooja } from '../types/database';
+import { formatPrice } from '../lib/helpers';
+import { LoadingSpinner } from '../components/Loading';
+import ErrorState from '../components/ErrorState';
+import EmptyState from '../components/EmptyState';
 
 const STEPS = ['Pooja', 'Location', 'Date', 'Devotees', 'Details', 'Review', 'Submit'];
 

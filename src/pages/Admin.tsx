@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { LayoutDashboard, CalendarCheck, Sparkles, MapPin, Tag, Star, Gift, Layers, Users, Settings, FileText } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import { getAllBookings, getAllPoojasAdmin, getAllLocationsAdmin, getAllStatesAdmin } from '@/lib/api';
+import { getAllBookings, getAllPoojasAdmin, getAllLocationsAdmin, getAllStatesAdmin } from '../lib/api';
 import type { Booking } from '../types/database';
 import { formatPrice, formatDate, getStatusBgClass } from '../lib/helpers';
 import { LoadingSpinner } from '../components/Loading';

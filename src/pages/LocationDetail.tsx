@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { MapPin, ArrowRight, Search as SearchIcon, Info } from 'lucide-react';
-import { getLocationBySlug, getOfferingsByLocation } from '@/lib/api';
-import type { Location, LocationPooja } from '@/types/database';
-import { formatPrice } from '@/lib/helpers';
-import { LoadingSpinner } from '@/components/Loading';
-import ErrorState from '@/components/ErrorState';
-import EmptyState from '@/components/EmptyState';
+import { getLocationBySlug, getOfferingsByLocation } from '../lib/api';
+import type { Location, LocationPooja } from '../types/database';
+import { formatPrice } from '../lib/helpers';
+import { LoadingSpinner } from '../components/Loading';
+import ErrorState from '../components/ErrorState';
+import EmptyState from '../components/EmptyState';
 
 export default function LocationDetail() {
   const { stateSlug, locationSlug } = useParams<{ stateSlug: string; locationSlug: string }>();

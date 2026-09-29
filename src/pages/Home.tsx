@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { MapPin, Search, Compass, Sparkles, ArrowRight, Calendar, Star } from 'lucide-react';
-import { getStates, getLocations, getPoojas, getPurposes } from '@/lib/api';
-import type { State, Location, Pooja, Purpose } from '@/types/database';
-import { LoadingSpinner } from '@/components/Loading';
-import PoojaCard from '@/components/PoojaCard';
+import { getStates, getLocations, getPoojas, getPurposes } from '../lib/api';
+import type { State, Location, Pooja, Purpose } from '../types/database';
+import { LoadingSpinner } from '../components/Loading';
+import PoojaCard from '../components/PoojaCard';
 
 export default function Home() {
   const [states, setStates] = useState<State[]>([]);

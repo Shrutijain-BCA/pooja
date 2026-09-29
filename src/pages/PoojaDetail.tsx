@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Clock, MapPin, Check, ArrowRight, Calendar, Users, Star } from 'lucide-react';
-import { getPoojaBySlug, getOfferingsByPooja } from '@/lib/api';
-import type { Pooja, LocationPooja } from '@/types/database';
-import { formatPrice } from '@/lib/helpers';
-import { LoadingSpinner } from '@/components/Loading';
-import ErrorState from '@/components/ErrorState';
-import EmptyState from '@/components/EmptyState';
+import { getPoojaBySlug, getOfferingsByPooja } from '../lib/api';
+import type { Pooja, LocationPooja } from '../types/database';
+import { formatPrice } from '../lib/helpers';
+import { LoadingSpinner } from '../components/Loading';
+import ErrorState from '../components/ErrorState';
+import EmptyState from '../components/EmptyState';
 import { MapPin as MapPinIcon } from 'lucide-react';
 
 export default function PoojaDetail() {
