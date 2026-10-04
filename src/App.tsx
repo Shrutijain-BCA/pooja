@@ -23,6 +23,7 @@ import TrackBooking from './pages/TrackBooking';
 import MyProfile from './pages/MyProfile';
 import About from './pages/About';
 import Contact from './pages/Contact';
+import WhatsAppFloat from './components/WhatsAppFloat';
 import Admin from './pages/Admin';
 import AdminBookings from './pages/AdminBookings';
 import AdminPoojas from './pages/AdminPoojas';
@@ -94,6 +95,7 @@ function App() {
             </Routes>
           </main>
           <Footer />
+          <WhatsAppFloat/>
         </div>
       </AuthProvider>
     </BrowserRouter>
