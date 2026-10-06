@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Menu, X, User, LogOut, CalendarCheck, UserCircle, Bell, Search } from 'lucide-react';
-import { useAuth } from '@/context/AuthContext';
-import { supabase } from '@/lib/supabase';
-import type { Notification } from '@/types/database';
+import { useAuth } from '../context/AuthContext';
+import { supabase } from '../lib/supabase';
+import type { Notification } from '../types/database';
 
 export default function Navbar() {
   const { user, profile, isAdmin, signOut } = useAuth();
@@ -62,10 +62,26 @@ export default function Navbar() {
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 shrink-0">
             <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-saffron-500 to-maroon-600 flex items-center justify-center">
-              <span className="text-white font-serif text-lg font-bold">PP</span>
+              <span className="text-white font-serif text-lg font-bold">
+                <div className="flex items-center gap-3">
+                  {/* Logo Icon */}
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-orange-500 to-amber-600 text-white shadow-md">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      className="w-6 h-6"
+                    >
+                      {/* Diya / Sacred Flame Icon */}
+                      <path d="M12 2C10.5 5 8 7.5 8 11c0 2.21 1.79 4 4 4s4-1.79 4-4c0-3.5-2.5-6-4-9zm0 11a2 2 0 110-4 2 2 0 010 4z" />
+                      <path d="M4 19c0 1.66 3.58 3 8 3s8-1.34 8-3-3.58-3-8-3-8 1.34-8 3z" />
+                    </svg>
+                  </div>
+                </div>
+              </span>
             </div>
             <span className="font-serif text-xl font-bold text-temple-900 hidden sm:block">
-              Pooja Palace
+               &nbsp; Pandit Pooja Seva
             </span>
           </Link>
 
@@ -75,11 +91,10 @@ export default function Navbar() {
               <Link
                 key={link.path}
                 to={link.path}
-                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  location.pathname === link.path
-                    ? 'text-saffron-700 bg-saffron-50'
-                    : 'text-temple-600 hover:text-temple-900 hover:bg-temple-50'
-                }`}
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${location.pathname === link.path
+                  ? 'text-saffron-700 bg-saffron-50'
+                  : 'text-temple-600 hover:text-temple-900 hover:bg-temple-50'
+                  }`}
               >
                 {link.label}
               </Link>
@@ -224,11 +239,10 @@ export default function Navbar() {
               <Link
                 key={link.path}
                 to={link.path}
-                className={`block px-4 py-2.5 rounded-lg text-sm font-medium ${
-                  location.pathname === link.path
-                    ? 'text-saffron-700 bg-saffron-50'
-                    : 'text-temple-600 hover:bg-temple-50'
-                }`}
+                className={`block px-4 py-2.5 rounded-lg text-sm font-medium ${location.pathname === link.path
+                  ? 'text-saffron-700 bg-saffron-50'
+                  : 'text-temple-600 hover:bg-temple-50'
+                  }`}
               >
                 {link.label}
               </Link>

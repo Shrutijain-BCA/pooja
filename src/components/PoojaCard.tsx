@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
-import type { Pooja } from '@/types/database';
+import type { Pooja } from '../types/database';
 
 interface PoojaCardProps {
   pooja: Pooja;

@@ -1,5 +1,5 @@
-import { supabase } from '@/lib/supabase';
-import type { State, Location, Category, Purpose, Deity, Occasion, Pooja, LocationPooja, Booking } from '@/types/database';
+import { supabase } from '../lib/supabase';
+import type { State, Location, Category, Purpose, Deity, Occasion, Pooja, LocationPooja, Booking } from '../types/database';
 
 // ===== States =====
 export async function getStates(): Promise<State[]> {

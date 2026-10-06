@@ -1,6 +1,6 @@
 import { Navigate, useLocation } from 'react-router-dom';
-import { useAuth } from '@/context/AuthContext';
-import { FullPageLoader } from '@/components/Loading';
+import { useAuth } from '../context/AuthContext';
+import { FullPageLoader } from '../components/Loading';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
