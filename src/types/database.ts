@@ -87,6 +87,8 @@ export interface Pooja {
   long_description: string;
   image: string;
   duration: string;
+  vidhi: string;
+  laba: string;
   is_active: boolean;
   created_at: string;
   updated_at: string;

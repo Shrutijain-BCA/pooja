@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { Clock, MapPin, Check, ArrowRight, Calendar, Users, Star } from 'lucide-react';
+import { Clock, MapPin, Check, ArrowRight, Calendar, Users, Star, BookOpen, Sparkles } from 'lucide-react';
 import { getPoojaBySlug, getOfferingsByPooja } from '../lib/api';
 import type { Pooja, LocationPooja } from '../types/database';
 import { formatPrice } from '../lib/helpers';
@@ -158,6 +158,30 @@ export default function PoojaDetail() {
                 </div>
               )}
             </div>
+
+            {/* Scriptural Procedure & Benefits */}
+            {(pooja as any).vidhi && (
+              <div className="card p-6 border-l-4 border-l-saffron-400">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-9 h-9 rounded-lg bg-saffron-100 flex items-center justify-center">
+                    <BookOpen className="w-5 h-5 text-saffron-700" />
+                  </div>
+                  <h2 className="text-xl font-serif font-semibold text-temple-900">शास्त्रोक्त विधि</h2>
+                </div>
+                <p className="text-temple-600 leading-relaxed whitespace-pre-line">{(pooja as any).vidhi}</p>
+              </div>
+            )}
+            {(pooja as any).laba && (
+              <div className="card p-6 border-l-4 border-l-green-400">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-9 h-9 rounded-lg bg-green-100 flex items-center justify-center">
+                    <Sparkles className="w-5 h-5 text-green-700" />
+                  </div>
+                  <h2 className="text-xl font-serif font-semibold text-temple-900">शास्त्रोक्त लाभ एवं फल</h2>
+                </div>
+                <p className="text-temple-600 leading-relaxed whitespace-pre-line">{(pooja as any).laba}</p>
+              </div>
+            )}
 
             {/* Available Locations */}
             <div className="card p-6">

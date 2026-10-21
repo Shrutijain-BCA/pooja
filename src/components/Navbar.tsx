@@ -60,31 +60,21 @@ export default function Navbar() {
       <nav className="section-container">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 shrink-0">
-            <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-saffron-500 to-maroon-600 flex items-center justify-center">
-              <span className="text-white font-serif text-lg font-bold">
-                <div className="flex items-center gap-3">
-                  {/* Logo Icon */}
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-orange-500 to-amber-600 text-white shadow-md">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                      className="w-6 h-6"
-                    >
-                      {/* Diya / Sacred Flame Icon */}
-                      <path d="M12 2C10.5 5 8 7.5 8 11c0 2.21 1.79 4 4 4s4-1.79 4-4c0-3.5-2.5-6-4-9zm0 11a2 2 0 110-4 2 2 0 010 4z" />
-                      <path d="M4 19c0 1.66 3.58 3 8 3s8-1.34 8-3-3.58-3-8-3-8 1.34-8 3z" />
-                    </svg>
-                  </div>
-                </div>
-              </span>
+          <Link to="/" className="flex items-center gap-3 shrink-0">
+            {/* Pandit Pooja Seva Logo */}
+            <div className="flex h-14 w-14 items-center justify-center shrink-0">
+              <img
+                src="/Logo.jpeg"
+                alt="Pandit Pooja Seva Logo"
+                className="h-full w-full object-contain"
+              />
             </div>
-            <span className="font-serif text-xl font-bold text-temple-900 hidden sm:block">
-               &nbsp; Pandit Pooja Seva
-            </span>
-          </Link>
 
+            {/* Website Name */}
+            {/* <span className="font-serif text-xl font-bold text-temple-900 whitespace-nowrap">
+              Pandit Pooja Seva
+            </span> */}
+          </Link>
           {/* Desktop Nav Links */}
           <div className="hidden lg:flex items-center gap-1">
             {navLinks.map((link) => (
@@ -148,52 +138,87 @@ export default function Navbar() {
             )}
 
             {/* User Menu */}
+
             {user ? (
-              <div className="relative hidden sm:block">
+              <div className="relative">
                 <button
                   onClick={() => setUserMenuOpen(!userMenuOpen)}
-                  className="flex items-center gap-2 p-1.5 pr-3 rounded-lg hover:bg-temple-50 transition-colors"
+                  className="flex items-center gap-1 sm:gap-2 p-1 rounded-lg hover:bg-temple-50 transition-colors"
+                  aria-label="Open profile menu"
+                  aria-expanded={userMenuOpen}
                 >
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-saffron-400 to-maroon-500 flex items-center justify-center text-white text-sm font-medium">
+                  <div className="w-9 h-9 shrink-0 rounded-full bg-gradient-to-br from-saffron-400 to-maroon-500 flex items-center justify-center text-white text-sm font-medium">
                     {profile?.name?.charAt(0) || user.email?.charAt(0) || 'U'}
                   </div>
-                  <span className="text-sm font-medium text-temple-700 max-w-24 truncate">
+
+                  <span className="hidden sm:block text-sm font-medium text-temple-700 max-w-24 truncate">
                     {profile?.name || 'Account'}
                   </span>
                 </button>
+
                 {userMenuOpen && (
-                  <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-lg border border-temple-100 overflow-hidden z-50">
+                  <div className="absolute right-0 mt-2 w-56 max-w-[calc(100vw-1rem)] bg-white rounded-xl shadow-lg border border-temple-100 overflow-hidden z-[60]">
                     <div className="p-3 border-b border-temple-100">
                       <div className="text-sm font-medium text-temple-900 truncate">
                         {profile?.name || 'User'}
                       </div>
-                      <div className="text-xs text-temple-400 truncate">{user.email}</div>
+                      <div className="text-xs text-temple-400 truncate">
+                        {user.email}
+                      </div>
                     </div>
-                    <Link to="/my-bookings" className="flex items-center gap-3 px-4 py-2.5 text-sm text-temple-700 hover:bg-temple-50">
-                      <CalendarCheck className="w-4 h-4" /> My Bookings
+
+                    <Link
+                      to="/my-bookings"
+                      className="flex items-center gap-3 px-4 py-2.5 text-sm text-temple-700 hover:bg-temple-50"
+                      onClick={() => setUserMenuOpen(false)}
+                    >
+                      <CalendarCheck className="w-4 h-4" />
+                      My Bookings
                     </Link>
-                    <Link to="/my-profile" className="flex items-center gap-3 px-4 py-2.5 text-sm text-temple-700 hover:bg-temple-50">
-                      <UserCircle className="w-4 h-4" /> My Profile
+
+                    <Link
+                      to="/my-profile"
+                      className="flex items-center gap-3 px-4 py-2.5 text-sm text-temple-700 hover:bg-temple-50"
+                      onClick={() => setUserMenuOpen(false)}
+                    >
+                      <UserCircle className="w-4 h-4" />
+                      My Profile
                     </Link>
+
                     {isAdmin && (
-                      <Link to="/admin" className="flex items-center gap-3 px-4 py-2.5 text-sm text-saffron-700 hover:bg-saffron-50 font-medium">
-                        <User className="w-4 h-4" /> Admin Dashboard
+                      <Link
+                        to="/admin"
+                        className="flex items-center gap-3 px-4 py-2.5 text-sm text-saffron-700 hover:bg-saffron-50 font-medium"
+                        onClick={() => setUserMenuOpen(false)}
+                      >
+                        <User className="w-4 h-4" />
+                        Admin Dashboard
                       </Link>
                     )}
+
                     <button
-                      onClick={() => signOut()}
+                      onClick={() => {
+                        setUserMenuOpen(false);
+                        signOut();
+                      }}
                       className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-maroon-600 hover:bg-maroon-50 border-t border-temple-100"
                     >
-                      <LogOut className="w-4 h-4" /> Logout
+                      <LogOut className="w-4 h-4" />
+                      Logout
                     </button>
                   </div>
                 )}
               </div>
             ) : (
-              <Link to="/login" className="hidden sm:block btn-ghost text-sm">
-                Login
+              <Link
+                to="/login"
+                className="btn-ghost text-xs sm:text-sm px-2 sm:px-4 py-2 whitespace-nowrap"
+              >
+                <span className="sm:hidden">Sign In</span>
+                <span className="hidden sm:inline">Login / Sign Up</span>
               </Link>
             )}
+
 
             {/* Book a Pooja CTA */}
             <Link to="/explore-poojas" className="hidden md:block btn-primary text-sm py-2 px-4">
