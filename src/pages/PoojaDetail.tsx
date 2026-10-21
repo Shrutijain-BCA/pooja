@@ -269,13 +269,13 @@ export default function PoojaDetail() {
                     Select a location from the list to see pricing and proceed with booking.
                   </p>
                   <div className="flex flex-col gap-2 text-sm text-temple-400">
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 justify-center">
                       <MapPin className="w-4 h-4" /> Choose location
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 justify-center">
                       <Calendar className="w-4 h-4" /> Select date
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 justify-center">
                       <Users className="w-4 h-4" /> Enter details
                     </div>
                   </div>
