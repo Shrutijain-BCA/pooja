@@ -139,7 +139,7 @@ export default function TrackBooking() {
           {booking.status === 'COMPLETED' && (
             <div className="mt-4 p-3 rounded-lg bg-blue-50 border border-blue-200">
               <p className="text-sm text-blue-700">
-                This pooja has been completed. Thank you for choosing Pooja Palace.
+                This pooja has been completed. Thank you for choosing Pandit Pooja Seva.
               </p>
             </div>
           )}

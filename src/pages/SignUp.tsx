@@ -41,7 +41,7 @@ export default function SignUp() {
             <span className="text-white font-serif text-2xl font-bold">PP</span>
           </div>
           <h1 className="text-2xl font-serif font-bold text-temple-900">Create Account</h1>
-          <p className="text-temple-500 mt-1">Join Pooja Palace to book sacred poojas</p>
+          <p className="text-temple-500 mt-1">Join Pandit Pooja Seva to book sacred poojas</p>
         </div>
 
         <div className="card p-6">

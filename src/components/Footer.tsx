@@ -12,7 +12,7 @@ export default function Footer() {
               <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-saffron-500 to-maroon-600 flex items-center justify-center">
                 <span className="text-white font-serif text-lg font-bold">PP</span>
               </div>
-              <span className="font-serif text-xl font-bold text-white">Pooja Palace</span>
+              <span className="font-serif text-xl font-bold text-white">Pandit Pooja Seva</span>
             </div>
             <p className="text-sm text-temple-400 leading-relaxed">
               Book authentic Vedic poojas at India's most revered sacred destinations. Arranged with trusted Pandit Ji.
@@ -63,7 +63,7 @@ export default function Footer() {
 
         <div className="border-t border-temple-800 mt-8 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-sm text-temple-400">
-            &copy; {new Date().getFullYear()} Pooja Palace. All rights reserved.
+            &copy; {new Date().getFullYear()} Pandit Pooja Seva. All rights reserved.
           </p>
           <p className="text-sm text-temple-400 flex items-center gap-1.5">
             Made with <Heart className="w-3.5 h-3.5 text-maroon-400 fill-maroon-400" /> for devotees

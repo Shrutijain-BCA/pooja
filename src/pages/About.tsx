@@ -14,7 +14,7 @@ export default function About() {
         <div className="absolute inset-0 bg-gradient-to-b from-temple-950/70 to-temple-950/80" />
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="text-center section-container">
-            <h1 className="text-3xl md:text-5xl font-serif font-bold text-white">About Pooja Palace</h1>
+            <h1 className="text-3xl md:text-5xl font-serif font-bold text-white">About Pandit Pooja Seva</h1>
             <p className="text-white/70 mt-4 max-w-2xl mx-auto">
               Connecting devotees with authentic Vedic rituals at India's most sacred destinations.
             </p>
@@ -28,7 +28,7 @@ export default function About() {
           <Sparkles className="w-10 h-10 text-saffron-500 mx-auto mb-4" />
           <h2 className="text-2xl md:text-3xl font-serif font-bold text-temple-900 mb-4">Our Mission</h2>
           <p className="text-temple-600 leading-relaxed text-lg">
-            Pooja Palace was born from a simple vision: to make authentic Vedic rituals accessible to devotees
+            PanditPoojaSeva was born from a simple vision: to make authentic Vedic rituals accessible to devotees
             across India and the world. We partner with trusted and experienced Pandit Ji at sacred destinations
             to ensure every pooja is performed with the utmost devotion and according to authentic Vedic traditions.
           </p>

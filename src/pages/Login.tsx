@@ -35,7 +35,7 @@ export default function Login() {
             <span className="text-white font-serif text-2xl font-bold">PP</span>
           </div>
           <h1 className="text-2xl font-serif font-bold text-temple-900">Welcome Back</h1>
-          <p className="text-temple-500 mt-1">Sign in to your Pooja Palace account</p>
+          <p className="text-temple-500 mt-1">Sign in to your Pandit Pooja Seva account</p>
         </div>
 
         <div className="card p-6">
