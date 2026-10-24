@@ -285,7 +285,7 @@ export default function Home() {
       </section>
 
       {/* Devotee Experiences */}
-      <section className="bg-temple-50 py-16 md:py-20 bg-saffron-50">
+      {/* <section className="bg-temple-50 py-16 md:py-20 bg-saffron-50">
         <div className="section-container bg-saffron-50 pb-10">
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-8">
             <div className="max-w-2xl">
@@ -368,7 +368,7 @@ export default function Home() {
             })}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Discovery Methods */}
       <section className="section-container py-16">
