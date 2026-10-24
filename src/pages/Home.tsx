@@ -64,6 +64,22 @@ const panditJi = [
     languages: 'Hindi · Sanskrit · Punjabi',
     image: '/Acharya_kamal_joshi.jpeg',
   },
+  {
+  name: 'Acharya Govind Sati',
+  title: 'Vedic Ritual Specialist',
+  experience: '15 years of experience',
+  specialty: 'All Pooja Specialist',
+  languages: 'Hindi · English · Sanskrit',
+  image: '/Acharya_Govind_Sati.jpeg',
+},
+{
+  name: 'Acharya Priyanshu Sati',
+  title: 'Vedpathi, Badrinath Dham',
+  experience: '20 years of experience',
+  specialty: 'Badnaam Darshan · All Pooja',
+  languages: 'Hindi · English · Sanskrit',
+  image: '/Acharya_Priyanshu_Sati.jpeg',
+},
 ];
 
 const devoteeExperiences = [
