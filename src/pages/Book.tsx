@@ -32,7 +32,6 @@ export default function Book() {
   const [devotees, setDevotees] = useState(1);
   const [customerName, setCustomerName] = useState(profile?.name || '');
   const [customerPhone, setCustomerPhone] = useState(profile?.phone || '');
-  const [customerEmail, setCustomerEmail] = useState(profile?.email || user?.email || '');
   const [customerNotes, setCustomerNotes] = useState('');
 
   useEffect(() => {
@@ -60,7 +59,6 @@ export default function Book() {
     if (profile) {
       setCustomerName(profile.name || customerName);
       setCustomerPhone(profile.phone || customerPhone);
-      setCustomerEmail(profile.email || customerEmail);
     }
   }, [profile]);
 
@@ -72,7 +70,7 @@ export default function Book() {
       case 1: return !!selectedOfferingId;
       case 2: return !!preferredDate;
       case 3: return devotees > 0;
-      case 4: return customerName && customerPhone && customerEmail;
+      case 4: return customerName && customerPhone;
       case 5: return true;
       default: return false;
     }
@@ -80,6 +78,20 @@ export default function Book() {
 
   const handleSubmit = async () => {
     if (!user || !pooja || !selectedOffering) return;
+
+    const dateParts = preferredDate.split('-');
+    const isCompleteDate =
+      dateParts.length === 3 &&
+      dateParts[0].length === 4 &&
+      dateParts[1].length === 2 &&
+      dateParts[2].length === 2 &&
+      !Number.isNaN(Date.parse(`${preferredDate}T00:00:00`));
+
+    if (!isCompleteDate) {
+      setSubmitError('Please select a complete preferred date before submitting.');
+      return;
+    }
+
     setSubmitting(true);
     setSubmitError('');
     const { data, error } = await createBooking({
@@ -89,7 +101,7 @@ export default function Book() {
       offering_id: selectedOffering.id,
       customer_name: customerName,
       customer_phone: customerPhone,
-      customer_email: customerEmail,
+      customer_email: '',
       preferred_date: preferredDate,
       preferred_time: preferredTime,
       number_of_devotees: devotees,
@@ -300,10 +312,6 @@ export default function Book() {
                 <input type="tel" value={customerPhone} onChange={(e) => setCustomerPhone(e.target.value)} required className="input" />
               </div>
               <div>
-                <label className="label">Email</label>
-                <input type="email" value={customerEmail} onChange={(e) => setCustomerEmail(e.target.value)} required className="input" />
-              </div>
-              <div>
                 <label className="label">Special Requirements / Message (Optional)</label>
                 <textarea
                   value={customerNotes}
@@ -351,10 +359,6 @@ export default function Book() {
               <div className="flex justify-between py-2 border-b border-temple-50">
                 <span className="text-temple-500">Mobile</span>
                 <span className="font-medium text-temple-900">{customerPhone}</span>
-              </div>
-              <div className="flex justify-between py-2 border-b border-temple-50">
-                <span className="text-temple-500">Email</span>
-                <span className="font-medium text-temple-900 text-sm">{customerEmail}</span>
               </div>
               {customerNotes && (
                 <div className="py-2 border-b border-temple-50">
