@@ -17,7 +17,7 @@ const panditJi = [
     image: '/Acharya_dinesh_sati .jpeg',
   },
   {
-    name: 'Dr Vedacharya Vinayak Bhatta Ji',
+    name: 'Dr Vedacharya Vinayak Bhatt Ji',
     title: 'Vedic Ritual Specialist',
     experience: '20 years of experience',
     specialty: 'Chandi Havan · All Pooja · 10 Mahavidya Mantra Dikshit',
@@ -76,7 +76,7 @@ const panditJi = [
   name: 'Acharya Priyanshu Sati',
   title: 'Vedpathi, Badrinath Dham',
   experience: '20 years of experience',
-  specialty: 'Badnaam Darshan · All Pooja',
+  specialty: 'Badrinath Darshan · All Pooja',
   languages: 'Hindi · English · Sanskrit',
   image: '/Acharya_Priyanshu_Sati.jpeg',
 },
