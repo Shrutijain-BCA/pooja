@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { MapPin, Search, Compass, Sparkles, ArrowRight, Calendar, Star, BadgeCheck, BookOpen, Languages, Quote, Play, Image as ImageIcon, Video, MessageCircle, CheckCheck } from 'lucide-react';
+import { MapPin, Search, Compass, Sparkles, ArrowRight, Calendar, Star, BadgeCheck, BookOpen, Languages, Quote, Play, Image as ImageIcon, Video, MessageCircle, CheckCheck, ChevronLeft, ChevronRight } from 'lucide-react';
 import { getStates, getLocations, getPoojas, getPurposes } from '../lib/api';
 import type { State, Location, Pooja, Purpose } from '../types/database';
 import { LoadingSpinner } from '../components/Loading';
@@ -65,21 +65,21 @@ const panditJi = [
     image: '/Acharya_kamal_joshi.jpeg',
   },
   {
-  name: 'Acharya Govind Sati',
-  title: 'Vedic Ritual Specialist',
-  experience: '15 years of experience',
-  specialty: 'All Pooja Specialist',
-  languages: 'Hindi · English · Sanskrit',
-  image: '/Acharya_Govind_Sati.jpeg',
-},
-{
-  name: 'Acharya Priyanshu Sati',
-  title: 'Vedpathi, Badrinath Dham',
-  experience: '20 years of experience',
-  specialty: 'Badrinath Darshan · All Pooja',
-  languages: 'Hindi · English · Sanskrit',
-  image: '/Acharya_Priyanshu_Sati.jpeg',
-},
+    name: 'Acharya Govind Sati',
+    title: 'Vedic Ritual Specialist',
+    experience: '15 years of experience',
+    specialty: 'All Pooja Specialist',
+    languages: 'Hindi · English · Sanskrit',
+    image: '/Acharya_Govind_Sati.jpeg',
+  },
+  {
+    name: 'Acharya Priyanshu Sati',
+    title: 'Vedpathi, Badrinath Dham',
+    experience: '20 years of experience',
+    specialty: 'Badrinath Darshan · All Pooja',
+    languages: 'Hindi · English · Sanskrit',
+    image: '/Acharya_Priyanshu_Sati.jpeg',
+  },
 ];
 
 const devoteeExperiences = [
@@ -183,6 +183,28 @@ export default function Home() {
   const [purposes, setPurposes] = useState<Purpose[]>([]);
   const [experienceFilter, setExperienceFilter] = useState<(typeof experienceFilters)[number]['value']>('all');
   const [loading, setLoading] = useState(true);
+  const panditTrackRef = useRef<HTMLDivElement>(null);
+  const [panditEdge, setPanditEdge] = useState({ left: false, right: true });
+
+  const updatePanditEdges = () => {
+    const track = panditTrackRef.current;
+    if (!track) return;
+    const left = track.scrollLeft > 8;
+    const right = track.scrollLeft + track.clientWidth < track.scrollWidth - 8;
+    setPanditEdge((prev) => (prev.left === left && prev.right === right ? prev : { left, right }));
+  };
+
+  const scrollPandits = (direction: 1 | -1) => {
+    const track = panditTrackRef.current;
+    if (!track) return;
+    track.scrollBy({ left: direction * track.clientWidth * 0.8, behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    updatePanditEdges();
+    window.addEventListener('resize', updatePanditEdges);
+    return () => window.removeEventListener('resize', updatePanditEdges);
+  }, [loading]);
 
   useEffect(() => {
     Promise.all([getStates(), getLocations(), getPoojas(), getPurposes()])
@@ -253,50 +275,97 @@ export default function Home() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {panditJi.map((pandit, index) => (
-            <article
-              key={pandit.name}
-              className="group relative overflow-hidden rounded-2xl bg-temple-950 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
-              style={{ animationDelay: `${index * 0.08}s` }}
+        <div className="relative">
+          {/* Blur fade, left edge (shows once you have scrolled) */}
+          <div
+            aria-hidden="true"
+            className={`pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-white/60 to-transparent backdrop-blur-md transition-opacity duration-300 sm:w-24 [-webkit-mask-image:linear-gradient(to_right,black,transparent)] [mask-image:linear-gradient(to_right,black,transparent)] ${panditEdge.left ? 'opacity-100' : 'opacity-0'
+              }`}
+          />
+          {/* Blur fade, right edge (shows while more cards remain) */}
+          <div
+            aria-hidden="true"
+            className={`pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-white/60 to-transparent backdrop-blur-md transition-opacity duration-300 sm:w-24 [-webkit-mask-image:linear-gradient(to_left,black,transparent)] [mask-image:linear-gradient(to_left,black,transparent)] ${panditEdge.right ? 'opacity-100' : 'opacity-0'
+              }`}
+          />
+
+          {/* Arrows (desktop) */}
+          {panditEdge.left && (
+            <button
+              type="button"
+              onClick={() => scrollPandits(-1)}
+              aria-label="Previous Pandit Ji"
+              className="absolute left-2 top-1/2 z-20 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/95 text-temple-700 shadow-lg transition hover:bg-white md:flex"
             >
-              <div className="relative h-72 overflow-hidden">
-                <img
-                  src={pandit.image}
-                  alt={`${pandit.name}, ${pandit.title}`}
-                  className="w-full h-full object-cover object-top grayscale-[15%] group-hover:scale-105 group-hover:grayscale-0 transition-all duration-700"
-                  loading="lazy"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-temple-950 via-temple-950/20 to-transparent" />
-                <div className="absolute top-4 left-4 inline-flex items-center gap-1.5 rounded-full bg-white/95 px-3 py-1.5 text-xs font-semibold text-temple-800 shadow-sm">
-                  <BadgeCheck className="w-4 h-4 text-green-600" /> Certified
-                </div>
-                <div className="absolute bottom-4 left-5 right-5">
-                  <h3 className="text-xl font-serif font-bold text-white">{pandit.name}</h3>
-                  <p className="text-saffron-300 text-sm mt-1">{pandit.title}</p>
-                </div>
-              </div>
-              <div className="p-5 text-white">
-                <div className="flex items-center gap-2 text-sm text-white/75 mb-4">
-                  <Star className="w-4 h-4 fill-saffron-400 text-saffron-400" />
-                  <span>{pandit.experience}</span>
-                </div>
-                <div className="space-y-3 text-sm">
-                  <div className="flex items-start gap-2.5">
-                    <BookOpen className="w-4 h-4 text-saffron-400 mt-0.5 shrink-0" />
-                    <span className="text-white/80">{pandit.specialty}</span>
+              <ChevronLeft className="h-5 w-5" />
+            </button>
+          )}
+          {panditEdge.right && (
+            <button
+              type="button"
+              onClick={() => scrollPandits(1)}
+              aria-label="Next Pandit Ji"
+              className="absolute right-2 top-1/2 z-20 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/95 text-temple-700 shadow-lg transition hover:bg-white md:flex"
+            >
+              <ChevronRight className="h-5 w-5" />
+            </button>
+          )}
+
+          {/* Scrolling row */}
+          <div
+            ref={panditTrackRef}
+            onScroll={updatePanditEdges}
+            className="flex snap-x snap-mandatory gap-5 overflow-x-auto overscroll-x-contain scroll-smooth pb-6 pt-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          >
+            {panditJi.map((pandit, index) => (
+              <div
+                key={pandit.name}
+                className="w-[80%] shrink-0 snap-start sm:w-[calc((100%_-_20px)/2)] lg:w-[calc((100%_-_60px)/3.4)]"
+              >
+                <article
+                  className="group relative flex h-full flex-col overflow-hidden rounded-2xl bg-temple-950 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+                  style={{ animationDelay: `${index * 0.08}s` }}
+                >
+                  <div className="relative h-72 overflow-hidden">
+                    <img
+                      src={pandit.image}
+                      alt={`${pandit.name}, ${pandit.title}`}
+                      className="w-full h-full object-cover object-top grayscale-[15%] group-hover:scale-105 group-hover:grayscale-0 transition-all duration-700"
+                      loading="lazy"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-temple-950 via-temple-950/20 to-transparent" />
+                    <div className="absolute top-4 left-4 inline-flex items-center gap-1.5 rounded-full bg-white/95 px-3 py-1.5 text-xs font-semibold text-temple-800 shadow-sm">
+                      <BadgeCheck className="w-4 h-4 text-green-600" /> Certified
+                    </div>
+                    <div className="absolute bottom-4 left-5 right-5">
+                      <h3 className="text-xl font-serif font-bold text-white">{pandit.name}</h3>
+                      <p className="text-saffron-300 text-sm mt-1">{pandit.title}</p>
+                    </div>
                   </div>
-                  <div className="flex items-start gap-2.5">
-                    <Languages className="w-4 h-4 text-saffron-400 mt-0.5 shrink-0" />
-                    <span className="text-white/80">{pandit.languages}</span>
+                  <div className="flex flex-1 flex-col p-5 text-white">
+                    <div className="flex items-center gap-2 text-sm text-white/75 mb-4">
+                      <Star className="w-4 h-4 fill-saffron-400 text-saffron-400" />
+                      <span>{pandit.experience}</span>
+                    </div>
+                    <div className="space-y-3 text-sm">
+                      <div className="flex items-start gap-2.5">
+                        <BookOpen className="w-4 h-4 text-saffron-400 mt-0.5 shrink-0" />
+                        <span className="text-white/80">{pandit.specialty}</span>
+                      </div>
+                      <div className="flex items-start gap-2.5">
+                        <Languages className="w-4 h-4 text-saffron-400 mt-0.5 shrink-0" />
+                        <span className="text-white/80">{pandit.languages}</span>
+                      </div>
+                    </div>
+                    <div className="flex-1" />
+                    <Link to="/explore-poojas" className="mt-5 pt-4 border-t border-white/10 flex items-center justify-between text-sm font-semibold text-saffron-300 hover:text-saffron-200 transition-colors">
+                      Book a pooja <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </Link>
                   </div>
-                </div>
-                <Link to="/explore-poojas" className="mt-5 pt-4 border-t border-white/10 flex items-center justify-between text-sm font-semibold text-saffron-300 hover:text-saffron-200 transition-colors">
-                  Book a pooja <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </Link>
+                </article>
               </div>
-            </article>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
 
@@ -498,7 +567,7 @@ export default function Home() {
           ))}
         </div>
       </section> */}
-      <PopularPoojasCarousel poojas={poojas}/>
+      <PopularPoojasCarousel poojas={poojas} />
 
       {/* Find by Purpose */}
       <section className="bg-gradient-to-b from-saffron-50 to-sand-50 py-16">
