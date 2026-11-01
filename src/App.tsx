@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Outlet, Route, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import { AuthProvider } from './context/AuthContext';
 import Navbar from './components/Navbar';
@@ -31,6 +31,7 @@ import AdminLocations from './pages/AdminLocations';
 import AdminOfferings from './pages/AdminOfferings';
 import AdminSimpleCrud from './pages/AdminSimpleCrud';
 import AdminUsers from './pages/AdminUsers';
+import AdminLayout from './components/AdminLayout';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -38,65 +39,76 @@ function ScrollToTop() {
   return null;
 }
 
+function PublicLayout() {
+  return (
+    <div className="min-h-screen flex flex-col">
+      <Navbar />
+      <main className="flex-1">
+        <Outlet />
+      </main>
+      <Footer />
+      <WhatsAppFloat />
+    </div>
+  );
+}
+
 function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
         <ScrollToTop />
-        <div className="min-h-screen flex flex-col">
-          <Navbar />
-          <main className="flex-1">
-            <Routes>
-              {/* Public Routes */}
-              <Route path="/" element={<Home />} />
-              <Route path="/explore-poojas" element={<ExplorePoojas />} />
-              <Route path="/poojas/:slug" element={<PoojaDetail />} />
-              <Route path="/locations" element={<Locations />} />
-              <Route path="/locations/:stateSlug" element={<StateDetail />} />
-              <Route path="/locations/:stateSlug/:locationSlug" element={<LocationDetail />} />
-              <Route path="/find-a-pooja" element={<FindAPooja />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/track-booking" element={<TrackBooking />} />
+        <Routes>
+          {/* The public website: header, footer and WhatsApp button */}
+          <Route element={<PublicLayout />}>
+            {/* Public Routes */}
+            <Route path="/" element={<Home />} />
+            <Route path="/explore-poojas" element={<ExplorePoojas />} />
+            <Route path="/poojas/:slug" element={<PoojaDetail />} />
+            <Route path="/locations" element={<Locations />} />
+            <Route path="/locations/:stateSlug" element={<StateDetail />} />
+            <Route path="/locations/:stateSlug/:locationSlug" element={<LocationDetail />} />
+            <Route path="/find-a-pooja" element={<FindAPooja />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/track-booking" element={<TrackBooking />} />
 
-              {/* Auth Routes */}
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<SignUp />} />
-              <Route path="/forgot-password" element={<ForgotPassword />} />
+            {/* Auth Routes */}
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
 
-              {/* Protected Routes */}
-              <Route path="/book/:poojaSlug" element={<ProtectedRoute><Book /></ProtectedRoute>} />
-              <Route path="/booking-confirmation/:bookingId" element={<ProtectedRoute><BookingConfirmation /></ProtectedRoute>} />
-              <Route path="/my-bookings" element={<ProtectedRoute><MyBookings /></ProtectedRoute>} />
-              <Route path="/my-bookings/:bookingId" element={<ProtectedRoute><BookingDetail /></ProtectedRoute>} />
-              <Route path="/my-profile" element={<ProtectedRoute><MyProfile /></ProtectedRoute>} />
+            {/* Protected Routes */}
+            <Route path="/book/:poojaSlug" element={<ProtectedRoute><Book /></ProtectedRoute>} />
+            <Route path="/booking-confirmation/:bookingId" element={<ProtectedRoute><BookingConfirmation /></ProtectedRoute>} />
+            <Route path="/my-bookings" element={<ProtectedRoute><MyBookings /></ProtectedRoute>} />
+            <Route path="/my-bookings/:bookingId" element={<ProtectedRoute><BookingDetail /></ProtectedRoute>} />
+            <Route path="/my-profile" element={<ProtectedRoute><MyProfile /></ProtectedRoute>} />
 
-              {/* Admin Routes */}
-              <Route path="/admin" element={<ProtectedRoute requireAdmin><Admin /></ProtectedRoute>} />
-              <Route path="/admin/bookings" element={<ProtectedRoute requireAdmin><AdminBookings /></ProtectedRoute>} />
-              <Route path="/admin/bookings/:bookingId" element={<ProtectedRoute requireAdmin><AdminBookings /></ProtectedRoute>} />
-              <Route path="/admin/poojas" element={<ProtectedRoute requireAdmin><AdminPoojas /></ProtectedRoute>} />
-              <Route path="/admin/locations" element={<ProtectedRoute requireAdmin><AdminLocations /></ProtectedRoute>} />
-              <Route path="/admin/offerings" element={<ProtectedRoute requireAdmin><AdminOfferings /></ProtectedRoute>} />
-              <Route path="/admin/categories" element={<ProtectedRoute requireAdmin><AdminSimpleCrud config={{ title: 'Categories', table: 'categories', fields: [{ name: 'name', label: 'Name' }, { name: 'description', label: 'Description', type: 'textarea' }] }} /></ProtectedRoute>} />
-              <Route path="/admin/states" element={<ProtectedRoute requireAdmin><AdminSimpleCrud config={{ title: 'States', table: 'states', fields: [{ name: 'name', label: 'Name' }, { name: 'description', label: 'Description', type: 'textarea' }, { name: 'image', label: 'Image URL' }] }} /></ProtectedRoute>} />
-              <Route path="/admin/purposes" element={<ProtectedRoute requireAdmin><AdminSimpleCrud config={{ title: 'Purposes', table: 'purposes', fields: [{ name: 'name', label: 'Name' }, { name: 'description', label: 'Description', type: 'textarea' }, { name: 'icon', label: 'Icon name (lucide)' }] }} /></ProtectedRoute>} />
-              <Route path="/admin/deities" element={<ProtectedRoute requireAdmin><AdminSimpleCrud config={{ title: 'Deities', table: 'deities', fields: [{ name: 'name', label: 'Name' }, { name: 'description', label: 'Description', type: 'textarea' }] }} /></ProtectedRoute>} />
-              <Route path="/admin/occasions" element={<ProtectedRoute requireAdmin><AdminSimpleCrud config={{ title: 'Occasions', table: 'occasions', fields: [{ name: 'name', label: 'Name' }, { name: 'description', label: 'Description', type: 'textarea' }] }} /></ProtectedRoute>} />
-              <Route path="/admin/users" element={<ProtectedRoute requireAdmin><AdminUsers /></ProtectedRoute>} />
+            {/* 404 */}
+            <Route path="*" element={
+              <div className="section-container py-20 text-center">
+                <h1 className="text-4xl font-serif font-bold text-temple-900">404</h1>
+                <p className="text-temple-500 mt-2">Page not found</p>
+              </div>
+            } />
+          </Route>
 
-              {/* 404 */}
-              <Route path="*" element={
-                <div className="section-container py-20 text-center">
-                  <h1 className="text-4xl font-serif font-bold text-temple-900">404</h1>
-                  <p className="text-temple-500 mt-2">Page not found</p>
-                </div>
-              } />
-            </Routes>
-          </main>
-          <Footer />
-          <WhatsAppFloat/>
-        </div>
+          {/* The admin portal: its own layout, only for admins */}
+          <Route element={<ProtectedRoute requireAdmin><AdminLayout /></ProtectedRoute>}>
+            <Route path="/admin" element={<Admin />} />
+            <Route path="/admin/bookings" element={<AdminBookings />} />
+            <Route path="/admin/bookings/:bookingId" element={<AdminBookings />} />
+            <Route path="/admin/poojas" element={<AdminPoojas />} />
+            <Route path="/admin/locations" element={<AdminLocations />} />
+            <Route path="/admin/offerings" element={<AdminOfferings />} />
+            <Route path="/admin/categories" element={<AdminSimpleCrud config={{ title: 'Categories', table: 'categories', fields: [{ name: 'name', label: 'Name' }, { name: 'description', label: 'Description', type: 'textarea' }] }} />} />
+            <Route path="/admin/states" element={<AdminSimpleCrud config={{ title: 'States', table: 'states', fields: [{ name: 'name', label: 'Name' }, { name: 'description', label: 'Description', type: 'textarea' }, { name: 'image', label: 'Image URL' }] }} />} />
+            <Route path="/admin/purposes" element={<AdminSimpleCrud config={{ title: 'Purposes', table: 'purposes', fields: [{ name: 'name', label: 'Name' }, { name: 'description', label: 'Description', type: 'textarea' }, { name: 'icon', label: 'Icon name (lucide)' }] }} />} />
+            <Route path="/admin/deities" element={<AdminSimpleCrud config={{ title: 'Deities', table: 'deities', fields: [{ name: 'name', label: 'Name' }, { name: 'description', label: 'Description', type: 'textarea' }] }} />} />
+            <Route path="/admin/occasions" element={<AdminSimpleCrud config={{ title: 'Occasions', table: 'occasions', fields: [{ name: 'name', label: 'Name' }, { name: 'description', label: 'Description', type: 'textarea' }] }} />} />
+            <Route path="/admin/users" element={<AdminUsers />} />
+          </Route>
+        </Routes>
       </AuthProvider>
     </BrowserRouter>
   );
