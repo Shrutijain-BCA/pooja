@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Plus, Edit, Power, X, Save, Search } from 'lucide-react';
-import { getAllPoojasAdmin, getCategories, getPurposes, getDeities, getOccasions } from '../lib/api';
-import { supabase } from '../lib/supabase';
+import { getAllPoojasAdmin, getCategories, getPurposes, getDeities, getOccasions, getAllLocationsAdmin } from '../lib/api';import { supabase } from '../lib/supabase';
 import { slugify } from '../lib/helpers';
-import type { Pooja, Category, Purpose, Deity, Occasion } from '../types/database';
+import type { Pooja, Category, Purpose, Deity, Occasion, Location } from '../types/database';
 import { LoadingSpinner } from '../components/Loading';
 import ErrorState from '../components/ErrorState';
 
@@ -26,20 +25,25 @@ export default function AdminPoojas() {
   const [selectedPurposes, setSelectedPurposes] = useState<string[]>([]);
   const [selectedDeities, setSelectedDeities] = useState<string[]>([]);
   const [selectedOccasions, setSelectedOccasions] = useState<string[]>([]);
+  const [locations, setLocations] = useState<Location[]>([]);
+  const [offerings, setOfferings] = useState<Record<string, { selected: boolean; price: string }>>({});
+  const [offeringsReady, setOfferingsReady] = useState(false);
+  const [bulkPrice, setBulkPrice] = useState('');
 
   useEffect(() => {
     load();
   }, []);
 
-  const load = async () => {
+    const load = async () => {
     setLoading(true);
     try {
-      const [p, c, pu, d, o] = await Promise.all([getAllPoojasAdmin(), getCategories(), getPurposes(), getDeities(), getOccasions()]);
+      const [p, c, pu, d, o, l] = await Promise.all([getAllPoojasAdmin(), getCategories(), getPurposes(), getDeities(), getOccasions(), getAllLocationsAdmin()]);
       setPoojas(p);
       setCategories(c);
       setPurposes(pu);
       setDeities(d);
       setOccasions(o);
+      setLocations(l.filter((x) => x.is_active));
     } catch (e: any) {
       setError(e.message);
     } finally {
@@ -54,6 +58,9 @@ export default function AdminPoojas() {
     setSelectedPurposes([]);
     setSelectedDeities([]);
     setSelectedOccasions([]);
+    setOfferings({});
+    setOfferingsReady(true);
+    setBulkPrice('');
     setShowModal(true);
   };
 
@@ -71,6 +78,29 @@ export default function AdminPoojas() {
     setSelectedPurposes(pus);
     setSelectedDeities(des);
     setSelectedOccasions(occs);
+
+    // Load this pooja's current locations and prices.
+    // If this fails, the locations are left untouched when you save.
+    setOfferings({});
+    setOfferingsReady(false);
+    setBulkPrice('');
+    supabase
+      .from('location_poojas')
+      .select('location_id, price, is_available')
+      .eq('pooja_id', p.id)
+      .then(({ data, error }) => {
+        if (error) return;
+        const next: Record<string, { selected: boolean; price: string }> = {};
+        (data ?? []).forEach((row: any) => {
+          next[row.location_id] = {
+            selected: row.is_available,
+            price: row.price != null ? String(Number(row.price)) : '',
+          };
+        });
+        setOfferings(next);
+        setOfferingsReady(true);
+      });
+
     setShowModal(true);
   };
 
@@ -78,20 +108,26 @@ export default function AdminPoojas() {
     setSaving(true);
     try {
       const slug = editing?.slug || slugify(form.name);
+      let poojaId: string;
+
       if (editing) {
-        await supabase.from('poojas').update({ ...form, slug, updated_at: new Date().toISOString() }).eq('id', editing.id);
+        const { error } = await supabase.from('poojas').update({ ...form, slug, updated_at: new Date().toISOString() }).eq('id', editing.id);
+        if (error) throw error;
+        poojaId = editing.id;
       } else {
-        const { data } = await supabase.from('poojas').insert({ ...form, slug }).select().single();
-        if (data) {
-          await syncRelations(data.id, selectedCategories, selectedPurposes, selectedDeities, selectedOccasions);
-        }
-        setShowModal(false);
-        await load();
-        return;
+        const { data, error } = await supabase.from('poojas').insert({ ...form, slug }).select().single();
+        if (error) throw error;
+        poojaId = data.id;
       }
 
-      // Update relations
-      await syncRelations(editing.id, selectedCategories, selectedPurposes, selectedDeities, selectedOccasions);
+      await syncRelations(poojaId, selectedCategories, selectedPurposes, selectedDeities, selectedOccasions);
+
+      try {
+        await saveOfferings(poojaId, !editing);
+      } catch (e: any) {
+        alert(`The pooja was saved, but its locations and prices could not be saved: ${e.message}`);
+      }
+
       setShowModal(false);
       await load();
     } catch (e: any) {
@@ -117,6 +153,52 @@ export default function AdminPoojas() {
     await supabase.from('poojas').update({ is_active: !p.is_active }).eq('id', p.id);
     await load();
   };
+
+    // ---- Locations & prices ----
+  const toggleLocation = (id: string) =>
+    setOfferings((prev) => ({ ...prev, [id]: { selected: !prev[id]?.selected, price: prev[id]?.price ?? '' } }));
+
+  const setLocationPrice = (id: string, price: string) =>
+    setOfferings((prev) => ({ ...prev, [id]: { selected: prev[id]?.selected ?? false, price } }));
+
+  const selectAllLocations = (select: boolean) =>
+    setOfferings((prev) => {
+      const next = { ...prev };
+      locations.forEach((l) => {
+        next[l.id] = { selected: select, price: prev[l.id]?.price ?? '' };
+      });
+      return next;
+    });
+
+  const applyBulkPrice = () =>
+    setOfferings((prev) => {
+      const next = { ...prev };
+      locations.forEach((l) => {
+        if (next[l.id]?.selected) next[l.id] = { ...next[l.id], price: bulkPrice };
+      });
+      return next;
+    });
+
+  const saveOfferings = async (poojaId: string, isNew: boolean) => {
+    if (!offeringsReady) return;
+    const rows = locations
+      .filter((l) => offerings[l.id] && (offerings[l.id].selected || !isNew))
+      .map((l) => {
+        const o = offerings[l.id];
+        const n = o.price.trim() === '' ? null : Number(o.price);
+        return {
+          location_id: l.id,
+          pooja_id: poojaId,
+          price: n !== null && !Number.isNaN(n) && n >= 0 ? n : null,
+          is_available: o.selected,
+        };
+      });
+    if (!rows.length) return;
+    const { error } = await supabase.from('location_poojas').upsert(rows, { onConflict: 'location_id,pooja_id' });
+    if (error) throw error;
+  };
+
+  const selectedCount = locations.filter((l) => offerings[l.id]?.selected).length;
 
   const filtered = poojas.filter((p) => p.name.toLowerCase().includes(search.toLowerCase()));
 
@@ -238,6 +320,60 @@ export default function AdminPoojas() {
                     </button>
                   ))}
                 </div>
+              </div>
+                            <div>
+                <div className="flex items-center justify-between">
+                  <label className="label">Locations &amp; prices</label>
+                  <span className="text-xs text-temple-400">{selectedCount} selected</span>
+                </div>
+                {!offeringsReady ? (
+                  <p className="text-sm text-temple-400">Loading locations...</p>
+                ) : (
+                  <>
+                    <div className="mb-3 flex flex-wrap items-center gap-2">
+                      <button type="button" onClick={() => selectAllLocations(true)} className="btn-secondary px-3 py-1.5 text-xs">Select all</button>
+                      <button type="button" onClick={() => selectAllLocations(false)} className="btn-secondary px-3 py-1.5 text-xs">Clear</button>
+                      <div className="ml-auto flex items-center gap-2">
+                        <input
+                          type="number"
+                          min="0"
+                          value={bulkPrice}
+                          onChange={(e) => setBulkPrice(e.target.value)}
+                          placeholder="Same price (₹)"
+                          className="input w-36 py-1.5 text-sm"
+                        />
+                        <button type="button" onClick={applyBulkPrice} disabled={!bulkPrice} className="btn-primary px-3 py-1.5 text-xs">
+                          Apply to selected
+                        </button>
+                      </div>
+                    </div>
+                    <div className="max-h-72 space-y-1 overflow-y-auto rounded-lg border border-temple-100 p-2">
+                      {locations.map((l) => {
+                        const o = offerings[l.id];
+                        const on = !!o?.selected;
+                        return (
+                          <div key={l.id} className={`flex items-center gap-3 rounded-lg px-2 py-1.5 ${on ? 'bg-saffron-50' : ''}`}>
+                            <input type="checkbox" checked={on} onChange={() => toggleLocation(l.id)} className="h-4 w-4 rounded" />
+                            <div className="min-w-0 flex-1">
+                              <p className="truncate text-sm font-medium text-temple-900">{l.name}</p>
+                              <p className="truncate text-xs text-temple-400">{l.state?.name}</p>
+                            </div>
+                            <input
+                              type="number"
+                              min="0"
+                              value={o?.price ?? ''}
+                              onChange={(e) => setLocationPrice(l.id, e.target.value)}
+                              disabled={!on}
+                              placeholder="Price ₹"
+                              className="input w-28 py-1.5 text-sm disabled:opacity-40"
+                            />
+                          </div>
+                        );
+                      })}
+                    </div>
+                    <p className="mt-2 text-xs text-temple-400">Leave a price empty to show &ldquo;To Be Confirmed&rdquo; on the website.</p>
+                  </>
+                )}
               </div>
               <label className="flex items-center gap-2">
                 <input type="checkbox" checked={form.is_active} onChange={(e) => setForm({ ...form, is_active: e.target.checked })} className="w-4 h-4 rounded" />
