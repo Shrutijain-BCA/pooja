@@ -1,7 +1,7 @@
 import { MessageCircle } from 'lucide-react';
 import { FaWhatsapp } from "react-icons/fa";
 
-const WHATSAPP_NUMBER = '9176681 19521';
+const WHATSAPP_NUMBER = '917668119521';
 const WHATSAPP_MESSAGE = 'Hi, I would like to know more about your pooja services.';
 
 export default function WhatsAppFloat() {
