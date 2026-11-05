@@ -1,15 +1,22 @@
-import { MessageCircle } from 'lucide-react';
+
 import { FaWhatsapp } from "react-icons/fa";
 
-const WHATSAPP_NUMBER = '917668119521';
-const WHATSAPP_MESSAGE = 'Hi, I would like to know more about your pooja services.';
+const WHATSAPP_NUMBER = "917668119521";
+const WHATSAPP_MESSAGE =
+  "Hi, I would like to know more about your pooja services.";
 
 export default function WhatsAppFloat() {
-  const link = `https://api.whatsapp.com/send?phone=917668119521&text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
+  const link = `https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
 
   return (
-    <a href={link} target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp" className="fixed bottom-6 right-6 z-50 flex items-center justify-center w-14 h-14 rounded-full bg-[#25D366] text-white shadow-lg hover:scale-110 transition-transform duration-200">
-      <FaWhatsapp className="w-7 h-7" fill="white" strokeWidth={0} />
+    <a
+      href={link}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Chat on WhatsApp"
+      className="fixed bottom-6 right-6 z-50 flex items-center justify-center w-14 h-14 rounded-full bg-[#25D366] text-white shadow-lg hover:scale-110 transition-transform duration-200"
+    >
+      <FaWhatsapp className="w-7 h-7" />
     </a>
   );
 }
