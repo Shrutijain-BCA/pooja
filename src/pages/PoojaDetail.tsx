@@ -8,6 +8,7 @@ import { LoadingSpinner } from '../components/Loading';
 import ErrorState from '../components/ErrorState';
 import EmptyState from '../components/EmptyState';
 import { MapPin as MapPinIcon } from 'lucide-react';
+import RatingStars from '../components/RatingStars';
 
 export default function PoojaDetail() {
   const { slug } = useParams<{ slug: string }>();
@@ -79,6 +80,7 @@ export default function PoojaDetail() {
             <span className="text-white">{pooja.name}</span>
           </nav>
           <h1 className="text-3xl md:text-4xl font-serif font-bold text-white">{pooja.name}</h1>
+          <RatingStars poojaId={pooja.id} light className="mt-3" />
           {categories.length > 0 && (
             <div className="flex flex-wrap gap-2 mt-3">
               {categories.map((cat: any) => (

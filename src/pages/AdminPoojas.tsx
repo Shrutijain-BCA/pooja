@@ -18,8 +18,9 @@ export default function AdminPoojas() {
   const [showModal, setShowModal] = useState(false);
   const [editing, setEditing] = useState<Pooja | null>(null);
   const [saving, setSaving] = useState(false);
-  const [form, setForm] = useState({
+    const [form, setForm] = useState({
     name: '', description: '', long_description: '', image: '', duration: '', is_active: true,
+    is_festive_special: false, festive_name: '', festive_start: '', festive_end: '',
   });
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedPurposes, setSelectedPurposes] = useState<string[]>([]);
@@ -53,7 +54,10 @@ export default function AdminPoojas() {
 
   const openAdd = () => {
     setEditing(null);
-    setForm({ name: '', description: '', long_description: '', image: '', duration: '', is_active: true });
+        setForm({
+      name: '', description: '', long_description: '', image: '', duration: '', is_active: true,
+      is_festive_special: false, festive_name: '', festive_start: '', festive_end: '',
+    });
     setSelectedCategories([]);
     setSelectedPurposes([]);
     setSelectedDeities([]);
@@ -68,7 +72,8 @@ export default function AdminPoojas() {
     setEditing(p);
     setForm({
       name: p.name, description: p.description, long_description: p.long_description || '',
-      image: p.image, duration: p.duration, is_active: p.is_active,
+      image: p.image, duration: p.duration, is_active: p.is_active,      is_festive_special: p.is_festive_special ?? false, festive_name: p.festive_name ?? '',
+      festive_start: p.festive_start ?? '', festive_end: p.festive_end ?? '',
     });
     const cats = (p as any).categories?.map((c: any) => c.category?.id).filter(Boolean) ?? [];
     const pus = (p as any).purposes?.map((pu: any) => pu.purpose?.id).filter(Boolean) ?? [];
@@ -108,14 +113,20 @@ export default function AdminPoojas() {
     setSaving(true);
     try {
       const slug = editing?.slug || slugify(form.name);
+            const payload = {
+        ...form,
+        festive_start: form.festive_start || null,
+        festive_end: form.festive_end || null,
+        slug,
+      };
       let poojaId: string;
 
       if (editing) {
-        const { error } = await supabase.from('poojas').update({ ...form, slug, updated_at: new Date().toISOString() }).eq('id', editing.id);
+        const { error } = await supabase.from('poojas').update({ ...payload, updated_at: new Date().toISOString() }).eq('id', editing.id);
         if (error) throw error;
         poojaId = editing.id;
       } else {
-        const { data, error } = await supabase.from('poojas').insert({ ...form, slug }).select().single();
+        const { data, error } = await supabase.from('poojas').insert(payload).select().single();
         if (error) throw error;
         poojaId = data.id;
       }
@@ -279,6 +290,52 @@ export default function AdminPoojas() {
               <div>
                 <label className="label">Duration</label>
                 <input type="text" value={form.duration} onChange={(e) => setForm({ ...form, duration: e.target.value })} className="input" placeholder="e.g. 2-3 hours" />
+              </div>
+                            <div className="space-y-3 rounded-xl border border-saffron-200 bg-saffron-50/50 p-4">
+                <label className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={form.is_festive_special}
+                    onChange={(e) => setForm({ ...form, is_festive_special: e.target.checked })}
+                    className="h-4 w-4 rounded"
+                  />
+                  <span className="text-sm font-medium text-temple-900">Festive special</span>
+                </label>
+                {form.is_festive_special && (
+                  <>
+                    <div>
+                      <label className="label">Festival name</label>
+                      <input
+                        type="text"
+                        value={form.festive_name}
+                        onChange={(e) => setForm({ ...form, festive_name: e.target.value })}
+                        className="input"
+                        placeholder="e.g. Diwali Special"
+                      />
+                    </div>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="label">Show from (optional)</label>
+                        <input
+                          type="date"
+                          value={form.festive_start}
+                          onChange={(e) => setForm({ ...form, festive_start: e.target.value })}
+                          className="input"
+                        />
+                      </div>
+                      <div>
+                        <label className="label">Show until (optional)</label>
+                        <input
+                          type="date"
+                          value={form.festive_end}
+                          onChange={(e) => setForm({ ...form, festive_end: e.target.value })}
+                          className="input"
+                        />
+                      </div>
+                    </div>
+                    <p className="text-xs text-temple-500">Leave both dates empty to keep it a special until you switch it off.</p>
+                  </>
+                )}
               </div>
 
               <div>

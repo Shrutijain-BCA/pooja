@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import type { Pooja } from '../types/database';
+import RatingStars from './RatingStars';
 
 interface PoojaCardProps {
   pooja: Pooja;
@@ -39,6 +40,7 @@ export default function PoojaCard({ pooja }: PoojaCardProps) {
         <h3 className="font-serif text-lg font-semibold text-temple-900 group-hover:text-saffron-700 transition-colors">
           {pooja.name}
         </h3>
+        <RatingStars poojaId={pooja.id} className="mt-1" />
         <p className="text-sm text-temple-500 mt-1 line-clamp-2">{pooja.description}</p>
 
         {deities.length > 0 && (

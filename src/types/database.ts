@@ -97,6 +97,10 @@ export interface Pooja {
   deities?: Deity[];
   occasions?: Occasion[];
   offerings?: LocationPooja[];
+  is_festive_special: boolean;
+  festive_name: string;
+  festive_start: string | null;
+  festive_end: string | null;
 }
 
 export interface LocationPooja {
