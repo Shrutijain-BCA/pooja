@@ -6,6 +6,8 @@ import type { State, Location, Pooja, Purpose } from '../types/database';
 import { LoadingSpinner } from '../components/Loading';
 import PoojaCard from '../components/PoojaCard';
 import PopularPoojasCarousel from '../components/Popularpoojascarousel';
+import FestiveSpecials from '../components/FestiveSpecials';
+import { isFestiveNow } from '../lib/helpers';
 
 const panditJi = [
   {
@@ -185,6 +187,7 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const panditTrackRef = useRef<HTMLDivElement>(null);
   const [panditEdge, setPanditEdge] = useState({ left: false, right: true });
+  const [festivePoojas, setFestivePoojas] = useState<Pooja[]>([]);
 
   const updatePanditEdges = () => {
     const track = panditTrackRef.current;
@@ -212,6 +215,7 @@ export default function Home() {
         setStates(s);
         setLocations(l);
         setPoojas(p.slice(0, 8));
+        <FestiveSpecials poojas={festivePoojas} />
         setPurposes(pu);
       })
       .finally(() => setLoading(false));

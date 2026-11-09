@@ -8,6 +8,7 @@ import { formatPrice, formatDate, formatDateTime, getStatusBgClass, getStatusDot
 import { LoadingSpinner } from '../components/Loading';
 import ErrorState from '../components/ErrorState';
 import EmptyState from '../components/EmptyState';
+import RateBooking from '../components/RateBooking';
 
 export default function BookingDetail() {
   const { bookingId } = useParams<{ bookingId: string }>();
@@ -160,6 +161,8 @@ export default function BookingDetail() {
           )}
         </div>
       </div>
+
+      <RateBooking booking={booking} />
 
       {/* Booking Details */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

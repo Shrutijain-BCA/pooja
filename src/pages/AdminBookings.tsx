@@ -69,7 +69,9 @@ export default function AdminBookings() {
     if (action === 'CANCEL') extra.cancellation_reason = cancelReason;
     if (action === 'CONFIRM') extra.admin_notes = adminNotes;
 
-    const { error } = await updateBookingStatus(selectedBooking.id, action, extra);
+        // The buttons say CONFIRM / CANCEL, but the database stores CONFIRMED / CANCELLED
+    const newStatus = action === 'CONFIRM' ? 'CONFIRMED' : action === 'CANCEL' ? 'CANCELLED' : 'COMPLETED';
+    const { error } = await updateBookingStatus(selectedBooking.id, newStatus, extra);
     setActionLoading(false);
 
     if (error) {

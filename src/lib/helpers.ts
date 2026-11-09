@@ -3,6 +3,19 @@ export function formatPrice(price: number | null | undefined): string {
   return `₹${price.toLocaleString('en-IN')}`;
 }
 
+// True while a pooja is marked as a festive special and today is inside its dates
+export function isFestiveNow(p: {
+  is_festive_special?: boolean;
+  festive_start?: string | null;
+  festive_end?: string | null;
+}): boolean {
+  if (!p.is_festive_special) return false;
+  const today = new Date().toLocaleDateString('en-CA'); // YYYY-MM-DD in the visitor's time zone
+  if (p.festive_start && p.festive_start > today) return false;
+  if (p.festive_end && p.festive_end < today) return false;
+  return true;
+}
+
 export function formatDate(date: string | Date): string {
   const d = typeof date === 'string' ? new Date(date) : date;
   return d.toLocaleDateString('en-IN', {

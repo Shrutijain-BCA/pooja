@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Sparkles} from 'lucide-react';
 import type { Pooja } from '../types/database';
 import RatingStars from './RatingStars';
+import { isFestiveNow } from '../lib/helpers';
 
 interface PoojaCardProps {
   pooja: Pooja;
@@ -25,6 +26,12 @@ export default function PoojaCard({ pooja }: PoojaCardProps) {
           <div className="w-full h-full flex items-center justify-center">
             <span className="text-temple-300 font-serif text-2xl">{pooja.name.charAt(0)}</span>
           </div>
+        )}
+        {isFestiveNow(pooja) && (
+          <span className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full bg-gradient-to-r from-saffron-500 to-maroon-500 px-2.5 py-1 text-xs font-semibold text-white shadow-md">
+            <Sparkles className="h-3 w-3" />
+            {pooja.festive_name || 'Festive Special'}
+          </span>
         )}
         {categories.length > 0 && (
           <div className="absolute top-3 left-3 flex flex-wrap gap-1">
