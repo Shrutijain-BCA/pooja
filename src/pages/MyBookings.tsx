@@ -82,7 +82,7 @@ export default function MyBookings() {
             <Link
               key={booking.id}
               to={`/my-bookings/${booking.id}`}
-              className="card group p-5 hover:shadow-md transition-all"
+                            className="card group block p-5 hover:shadow-md transition-all"
             >
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1 min-w-0">

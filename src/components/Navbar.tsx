@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Menu, X, User, LogOut, CalendarCheck, UserCircle, Bell, Search } from 'lucide-react';
+import { Menu, X, User, LogOut, CalendarCheck, UserCircle, Bell, Search, Sparkles } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { supabase } from '../lib/supabase';
 import type { Notification } from '../types/database';
+import { isFestiveNow } from '../lib/helpers';
 
 export default function Navbar() {
   const { user, profile, isAdmin, signOut } = useAuth();
@@ -45,9 +46,22 @@ export default function Navbar() {
     }
   };
 
-  const navLinks = [
+   // Show the "Special Poojas" button only while a festive special is running
+  const [hasSpecials, setHasSpecials] = useState(false);
+
+  useEffect(() => {
+    supabase
+      .from('poojas')
+      .select('is_festive_special, festive_start, festive_end')
+      .eq('is_active', true)
+      .eq('is_festive_special', true)
+      .then(({ data }) => setHasSpecials((data ?? []).some(isFestiveNow)));
+  }, []);
+
+  const navLinks: { label: string; path: string; special?: boolean }[] = [
     { label: 'Home', path: '/' },
     { label: 'Explore Poojas', path: '/explore-poojas' },
+    ...(hasSpecials ? [{ label: 'Special Poojas', path: '/festive-specials', special: true }] : []),
     { label: 'Locations', path: '/locations' },
     { label: 'Find a Pooja', path: '/find-a-pooja' },
     { label: 'About Us', path: '/about' },
@@ -77,15 +91,20 @@ export default function Navbar() {
           </Link>
           {/* Desktop Nav Links */}
           <div className="hidden lg:flex items-center gap-1">
-            {navLinks.map((link) => (
+                        {navLinks.map((link) => (
               <Link
                 key={link.path}
                 to={link.path}
-                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${location.pathname === link.path
-                  ? 'text-saffron-700 bg-saffron-50'
-                  : 'text-temple-600 hover:text-temple-900 hover:bg-temple-50'
-                  }`}
+                className={
+                  link.special
+                    ? 'inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-saffron-500 to-maroon-500 px-3.5 py-1.5 text-sm font-semibold text-white shadow-sm transition-opacity hover:opacity-90'
+                    : `px-3 py-2 rounded-lg text-sm font-medium transition-colors ${location.pathname === link.path
+                      ? 'text-saffron-700 bg-saffron-50'
+                      : 'text-temple-600 hover:text-temple-900 hover:bg-temple-50'
+                      }`
+                }
               >
+                {link.special && <Sparkles className="h-3.5 w-3.5" />}
                 {link.label}
               </Link>
             ))}
@@ -260,15 +279,20 @@ export default function Navbar() {
       {mobileOpen && (
         <div className="lg:hidden border-t border-temple-100 bg-white animate-slide-down">
           <div className="section-container py-4 space-y-1">
-            {navLinks.map((link) => (
+                        {navLinks.map((link) => (
               <Link
                 key={link.path}
                 to={link.path}
-                className={`block px-4 py-2.5 rounded-lg text-sm font-medium ${location.pathname === link.path
-                  ? 'text-saffron-700 bg-saffron-50'
-                  : 'text-temple-600 hover:bg-temple-50'
-                  }`}
+                className={
+                  link.special
+                    ? 'flex items-center gap-2 rounded-lg bg-gradient-to-r from-saffron-500 to-maroon-500 px-4 py-2.5 text-sm font-semibold text-white'
+                    : `block px-4 py-2.5 rounded-lg text-sm font-medium ${location.pathname === link.path
+                      ? 'text-saffron-700 bg-saffron-50'
+                      : 'text-temple-600 hover:bg-temple-50'
+                      }`
+                }
               >
+                {link.special && <Sparkles className="h-4 w-4" />}
                 {link.label}
               </Link>
             ))}

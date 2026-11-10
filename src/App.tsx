@@ -32,6 +32,7 @@ import AdminOfferings from './pages/AdminOfferings';
 import AdminSimpleCrud from './pages/AdminSimpleCrud';
 import AdminUsers from './pages/AdminUsers';
 import AdminLayout from './components/AdminLayout';
+import FestiveSpecialsPage from './pages/FestiveSpecialsPage';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -63,6 +64,7 @@ function App() {
             {/* Public Routes */}
             <Route path="/" element={<Home />} />
             <Route path="/explore-poojas" element={<ExplorePoojas />} />
+            <Route path="/festive-specials" element={<FestiveSpecialsPage />} />
             <Route path="/poojas/:slug" element={<PoojaDetail />} />
             <Route path="/locations" element={<Locations />} />
             <Route path="/locations/:stateSlug" element={<StateDetail />} />

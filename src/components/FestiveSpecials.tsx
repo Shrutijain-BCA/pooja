@@ -45,11 +45,11 @@ export default function FestiveSpecials({ poojas }: { poojas: Pooja[] }) {
               Book these auspicious rituals for the festival, performed by experienced Pandit Ji.
             </p>
           </div>
-          <Link
-            to="/explore-poojas"
+                    <Link
+            to="/festive-specials"
             className="inline-flex items-center gap-2 self-start rounded-lg bg-white px-5 py-2.5 text-sm font-semibold text-saffron-700 shadow-md transition-all hover:gap-3 md:self-auto"
           >
-            View all poojas <ArrowRight className="h-4 w-4" />
+            See all special poojas <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
 
